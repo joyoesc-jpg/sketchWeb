@@ -1,0 +1,73 @@
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+
+    padding: 16px 24px;
+
+    background: #ffffff;
+
+    border-bottom: 4px solid #e4572e;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.toolbar input[type="color"] {
+    width: 52px;
+    height: 52px;
+
+    border: 3px solid #e4572e;
+    border-radius: 50%;
+
+    cursor: pointer;
+    background: white;
+}
+
+.toolbar input[type="range"] {
+    width: 140px;
+    accent-color: #e4572e;
+}
+
+.toolbar select {
+    padding: 10px 14px;
+
+    border-radius: 12px;
+    border: 2px solid #e4572e;
+
+    background: white;
+
+    font-weight: 600;
+}
+
+.toolbar button {
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #e4572e,
+        #ff7a45
+    );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.toolbar button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(228,87,46,0.3);
+}
