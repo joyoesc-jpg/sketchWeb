@@ -1,28 +1,30 @@
-/*.gallery-page {
-
+.gallery-page {
     min-height: 100vh;
-    
-    padding: 30px;
+
+    background: #f8f4f2;
+
+    padding: 40px;
 }
 
-.gallery-title {
+.gallery-page h1 {
+    text-align: center;
 
-    color: white;
+    color: #e4572e;
 
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 
-    font-size: 2rem;
+    font-size: 2.2rem;
 }
 
 .gallery-grid {
+    max-width: 1400px;
+
+    margin: auto;
 
     display: grid;
 
     grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(300px, 1fr)
-        );
+        repeat(auto-fill, minmax(320px, 1fr));
 
-    gap: 24px;
+    gap: 30px;
 }
