@@ -12,7 +12,7 @@ export function redrawCanvas(
         0,
         0,
         1000,
-        600
+        800
     );
 
     ctx.fillStyle = "white";
@@ -21,7 +21,7 @@ export function redrawCanvas(
         0,
         0,
         1000,
-        600
+        800
     );
 
     strokes.forEach((stroke) => {

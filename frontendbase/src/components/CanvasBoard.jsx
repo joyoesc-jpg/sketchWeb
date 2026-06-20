@@ -7,6 +7,7 @@ import { replay }from "../utils/replayUtils";
 import {exportTimelapse, exportPNG} from "../utils/exportUtils";
 import {createCanvas} from "../utils/createCanvas";
 import {attachDrawingEvents} from "../utils/drawingEvents";
+import "./CanvasBoard.css";
 
 function CanvasBoard({
     color,
@@ -16,7 +17,9 @@ function CanvasBoard({
     setUndo,
     setRedo,
     setExportPNG,
-    setExportTimelapse
+    setExportTimelapse,
+    setSave,
+    setSaveAndExit
 }) {
 
     const canvasElementRef = useRef(null);
@@ -106,7 +109,7 @@ function CanvasBoard({
             document.createElement("canvas");
 
         exportCanvas.width = 1000;
-        exportCanvas.height = 600;
+        exportCanvas.height = 800;
 
         exportCanvasRef.current =
             exportCanvas;
@@ -127,7 +130,8 @@ function CanvasBoard({
                 colorRef,
                 sizeRef,
                 opacityRef,
-                brushTypeRef
+                brushTypeRef,
+                redoStackRef
             }
         );
 
@@ -166,6 +170,24 @@ function CanvasBoard({
                     strokesRef.current
                 );
 
+            }
+        );
+
+        setSave(
+            () => () => {
+                console.log("Strokes:", strokesRef.current);
+            }
+        );
+
+        setSaveAndExit(
+            () => () => {
+                console.log("Strokes:", strokesRef.current);
+                try {
+                    window.history.back();
+                } catch (e) {
+                    // fallback: navigate to home
+                    window.location.href = "/";
+                }
             }
         );
     }, []);
@@ -209,12 +231,12 @@ function CanvasBoard({
     }, []);    
 
     return (
-        <canvas
-            ref={canvasElementRef}
-            style={{
-                border: "1px solid black"
-            }}
-        />
+        <div className="canvas-container">
+            <canvas
+                ref={canvasElementRef}
+                className="drawing-canvas"
+            />
+        </div>
     );
 }
 

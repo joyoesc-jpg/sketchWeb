@@ -1,3 +1,5 @@
+import "./Toolbar.css";
+
 function Toolbar({
   color,
   setColor,
@@ -10,10 +12,12 @@ function Toolbar({
   undoAction,
   redoAction,
   exportPNGAction,
-  exportTimelapseAction
+  exportTimelapseAction,
+  saveAction,
+  saveAndExitAction
 }) {
   return (
-    <div>
+    <div className="toolbar">
       <input
         type="color"
         value={color}
@@ -70,7 +74,17 @@ function Toolbar({
       >
           Exportar Timelapse
       </button>
+      <button
+          onClick={() => saveAction?.()}
+      >
+          Guardar
+      </button>
 
+      <button
+          onClick={() => saveAndExitAction?.()}
+      >
+          Guardar y Salir
+      </button>
     </div>
   );
 }

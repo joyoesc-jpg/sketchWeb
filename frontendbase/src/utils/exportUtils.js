@@ -105,7 +105,7 @@ export function exportPNG(sourceCanvas) {
         document.createElement("canvas");
 
     exportCanvas.width = 1000;
-    exportCanvas.height = 600;
+    exportCanvas.height = 800;
 
     const exportCtx =
         exportCanvas.getContext("2d");
@@ -117,7 +117,7 @@ export function exportPNG(sourceCanvas) {
         0,
         0,
         1000,
-        600
+        800
     );
 
     exportCtx.drawImage(

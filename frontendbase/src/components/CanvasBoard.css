@@ -1,0 +1,42 @@
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+
+    min-height: calc(100vh - 90px);
+
+    background: linear-gradient(
+        180deg,
+        #fff8f5,
+        #fff2eb
+    );
+}
+
+.canvas-container .canvas-container {
+    width: 1000px !important;
+    height: 600px !important;
+
+    border: 3px solid #e4572e;
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+.canvas-container .canvas-container {
+    height: fit-content !important;
+    line-height: 0;
+}
+
+/* Ambos canvas exactamente iguales */
+.canvas-container .lower-canvas,
+.canvas-container .upper-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border-radius: 20px;
+}

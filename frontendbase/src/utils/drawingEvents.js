@@ -12,7 +12,8 @@ export function attachDrawingEvents(
         colorRef,
         sizeRef,
         opacityRef,
-        brushTypeRef
+        brushTypeRef, 
+        redoStackRef
     }
 ) {
     canvas.upperCanvasEl.addEventListener(
@@ -120,6 +121,7 @@ export function attachDrawingEvents(
                 strokesRef.current.push(
                     currentStrokeRef.current
                 );
+                redoStackRef.current = [];
 
             }
 

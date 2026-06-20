@@ -1,0 +1,34 @@
+.editor-page {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff8f5 0%,
+            #fff2eb 100%
+        );
+}
+
+.editor-page::before {
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(228,87,46,0.08),
+            transparent 35%
+        );
+
+    pointer-events: none;
+}

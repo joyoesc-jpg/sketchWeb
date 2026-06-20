@@ -8,7 +8,7 @@ export function createCanvas(
         canvasElement,
         {
             width: 1000,
-            height: 600,
+            height: 800,
             backgroundColor: "white",
             isDrawingMode: false,
             selection: false

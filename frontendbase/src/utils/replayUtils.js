@@ -14,7 +14,7 @@ export async function replay(
         0,
         0,
         1000,
-        600
+        800
     );
 
     for (const stroke of strokes) {
