@@ -6,9 +6,9 @@ export function drawCharcoal(
     rgba,
     size
 ) {
+    ctx.save();
 
-    const width =
-        size * pressure;
+    const width = size * pressure;
 
     for(let i = 0; i < 25; i++) {
 
@@ -40,29 +40,10 @@ export function drawCharcoal(
 
         ctx.strokeStyle = rgba;
 
-        ctx.stroke();
-
         ctx.globalAlpha = 0.2;
+
+        ctx.stroke();
     }
 
-    for(let i = 0; i < 100; i++) {
-
-        const x =
-            currentPoint.x +
-            (Math.random() - 0.5) * width * 2;
-
-        const y =
-            currentPoint.y +
-            (Math.random() - 0.5) * width * 2;
-
-        const radius =
-            Math.random() * width * 0.15;
-
-        ctx.beginPath();
-
-
-        ctx.fillStyle = rgba;
-
-        ctx.fill();
-    }
+    ctx.restore();
 }

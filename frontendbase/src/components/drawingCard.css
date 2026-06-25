@@ -1,49 +1,72 @@
 .drawing-card {
+    background: #f8f4f2;
 
-    background: white;
-
-    border-radius: 12px;
+    border: 2px solid #e4572e;
+    border-radius: 20px;
 
     overflow: hidden;
 
+    transition: 0.2s;
+
     box-shadow:
-        0 4px 12px rgba(0,0,0,0.2);
+        0 4px 12px rgba(228, 87, 46, 0.15);
+}
+
+.drawing-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 20px rgba(228, 87, 46, 0.25);
 }
 
 .drawing-card img {
-
     width: 100%;
-
-    height: 200px;
+    height: 220px;
 
     object-fit: cover;
+
+    border-bottom:
+        2px solid #e4572e;
 }
 
 .drawing-card h3 {
+    text-align: center;
 
-    padding: 12px;
+    color: #4b2c20;
 
-    margin: 0;
+    margin: 15px 0;
+
+    font-size: 1.2rem;
 }
 
 .actions {
-
     display: flex;
 
     gap: 10px;
 
-    padding: 12px;
+    padding: 15px;
 }
 
 .actions button {
-
     flex: 1;
-
-    padding: 8px;
 
     border: none;
 
-    border-radius: 6px;
+    border-radius: 12px;
+
+    background: #e4572e;
+
+    color: white;
+
+    font-weight: bold;
+
+    padding: 10px;
 
     cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.actions button:hover {
+    background: #c9441e;
 }
