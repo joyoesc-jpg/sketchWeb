@@ -36,4 +36,8 @@ module.exports = {
             template: './public/index.html'
         }),
     ],
+    
+    devServer: {
+    historyApiFallback: true,
+  },
 };

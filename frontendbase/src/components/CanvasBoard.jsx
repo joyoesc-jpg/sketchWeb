@@ -4,7 +4,7 @@ import { brushes } from "../brushes";
 import { hexToRgba } from "../utils/colorUtils";
 import {redrawCanvas} from "../utils/canvasUtils";
 import { replay }from "../utils/replayUtils";
-import {exportTimelapse, exportPNG} from "../utils/exportUtils";
+import {exportTimelapse, exportPNG, getPNG} from "../utils/exportUtils";
 import {createCanvas} from "../utils/createCanvas";
 import {attachDrawingEvents} from "../utils/drawingEvents";
 import "./CanvasBoard.css";
@@ -14,12 +14,12 @@ function CanvasBoard({
     size,
     opacity,
     brushType,
+    setStrokes,
     setUndo,
     setRedo,
     setExportPNG,
-    setExportTimelapse,
-    setSave,
-    setSaveAndExit
+    setExportPreview,
+    setExportTimelapse
 }) {
 
     const canvasElementRef = useRef(null);
@@ -44,6 +44,10 @@ function CanvasBoard({
     useEffect(() => {
         colorRef.current = color;
     }, [color]);
+
+    useEffect(()=>{
+        setStrokes(strokesRef);
+    }, strokesRef);
 
     useEffect(() => {
         sizeRef.current = size;
@@ -162,6 +166,16 @@ function CanvasBoard({
             }
         );
 
+        setExportPreview(
+            () => () => {
+
+                return getPNG(
+                    ctxRef.current.canvas, true
+                );
+
+            }
+        );
+
         setExportTimelapse(
             () => () => {
 
@@ -170,24 +184,6 @@ function CanvasBoard({
                     strokesRef.current
                 );
 
-            }
-        );
-
-        setSave(
-            () => () => {
-                console.log("Strokes:", strokesRef.current);
-            }
-        );
-
-        setSaveAndExit(
-            () => () => {
-                console.log("Strokes:", strokesRef.current);
-                try {
-                    window.history.back();
-                } catch (e) {
-                    // fallback: navigate to home
-                    window.location.href = "/";
-                }
             }
         );
     }, []);

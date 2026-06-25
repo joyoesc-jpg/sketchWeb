@@ -1,0 +1,34 @@
+.bg-modal{
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000
+}
+
+.div-form{
+    background-color: white;
+    width: 60%;
+    height: 60%;
+    border-radius: 3px;
+    border-color: black;
+    border-width: 6px;
+}
+
+.modal-btn{
+    border-radius: 6px;
+    float: right;
+}
+
+.textIn{
+    border-color: black;
+}
+
+.errorMessage{
+    color: red;
+}

@@ -1,4 +1,4 @@
-import "drawingCard.css";
+import "./drawingCard.css";
 
 function DrawingCard({
     drawing,

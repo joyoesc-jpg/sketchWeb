@@ -1,36 +1,39 @@
+import { getProjects } from "../utils/dbUtils";
 import DrawingCard from "../components/DrawingCard";
+import CreateProjectForm from "../components/CreateProjectForm";
 import "./GalleryPage.css";
+import { useEffect, useState } from "react";
 
-function GalleryPage() {
+function GalleryPage({idUser, setIdProject}) {
 
-    const drawings = [
+    if(idUser == -1){
+        window.location.href = "/login";
+    }
 
-        {
-            id: 1,
-            title: "Montaña",
-            preview:
-                "https://picsum.photos/300"
-        },
+    const [openModal, setOpenModal] = useState(false);
 
-        {
-            id: 2,
-            title: "Bosque",
-            preview:
-                "https://picsum.photos/301"
-        },
+    const [drawings, setDrawings] = useState([]);
 
-        {
-            id: 3,
-            title: "Lago",
-            preview:
-                "https://picsum.photos/302"
-        }
-
-    ];
+    ///useEffect(async ()=>{
+    ///    try{
+    ///        const {data} = await getProjects({idUser});
+///
+    ///        console.log(data);
+///
+///
+    ///    }catch(e){
+    ///        console.log(e);
+    ///    }
+    ///}, []);
 
     return (
-
         <div className="gallery-page">
+            <CreateProjectForm 
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                idUser={idUser}
+                setIdProject={setIdProject}
+            />
 
             <h1>
                 Mis Dibujos
@@ -41,22 +44,25 @@ function GalleryPage() {
             >
 
                 {
-                    drawings.map(
-                        drawing => (
+                    drawings.length == 0? null : 
+                        drawings.map(
+                            drawing => (
 
-                            <DrawingCard
-                                key={drawing.id}
-                                drawing={drawing}
-                                onOpen={() => {}}
-                                onExport={() => {}}
-                                onDelete={() => {}}
-                            />
+                                <DrawingCard
+                                    key={drawing.id}
+                                    drawing={drawing}
+                                    onOpen={() => {}}
+                                    onExport={() => {}}
+                                    onDelete={() => {}}
+                                />
 
+                            )
                         )
-                    )
                 }
 
             </div>
+
+            <button onClick={()=>{setOpenModal(true)}}>Crear projecto</button>
 
         </div>
     );

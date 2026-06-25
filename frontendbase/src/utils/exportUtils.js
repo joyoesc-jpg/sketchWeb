@@ -98,9 +98,8 @@ export async function exportTimelapse(
     };
 }
 
-
-export function exportPNG(sourceCanvas) {
-
+export function getPNG(sourceCanvas, preview){
+    
     const exportCanvas =
         document.createElement("canvas");
 
@@ -120,22 +119,39 @@ export function exportPNG(sourceCanvas) {
         800
     );
 
-    exportCtx.drawImage(
-        sourceCanvas,
-        0,
-        0
-    );
+    if(preview){
+        exportCtx.drawImage(
+            sourceCanvas,
+            0,
+            0,
+            200,
+            180
+        );
+    }else{
+        exportCtx.drawImage(
+            sourceCanvas,
+            0,
+            0
+        );
+    }
+    
+    return exportCanvas.toDataURL(
+        "image/png"
+    )
+}
 
+
+export function exportPNG(sourceCanvas) {
+
+    const exportedPNG = getPNG(sourceCanvas);
+    
     const link =
         document.createElement("a");
 
     link.download =
         "drawing.png";
 
-    link.href =
-        exportCanvas.toDataURL(
-            "image/png"
-        );
+    link.href = exportedPNG;
 
     link.click();
 }

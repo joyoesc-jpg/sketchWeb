@@ -1,12 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import Toolbar from "../components/Toolbar";
 import CanvasBoard from "../components/CanvasBoard";
 
 import "./EditorPage.css";
+import { UpdateProject } from "../utils/dbUtils";
 
-function EditorPage() {
+function EditorPage({idUser, idProject, setIdProject}) {
 
+    const navigate = useNavigate();
+
+    if(idUser == -1 || idProject == -1){
+        navigate("/");
+    }
+
+    const [strokes, setStrokes] = useState([]);
+    
     const [color, setColor] =
         useState("#000000");
 
@@ -28,13 +38,40 @@ function EditorPage() {
     const [exportPNGAction, setExportPNGAction] =
         useState(null);
 
+    const [exportPreviewAction, setExportPreviewAction] =
+        useState(null);
+
     const [
         exportTimelapseAction,
         setExportTimelapseAction
     ] = useState(null);
 
-    const [saveAction, setSaveAction] = useState(null);
-    const [saveAndExitAction, setSaveAndExitAction] = useState(null);
+    const saveProject = async(e) => {
+        const data = new FormData();
+        data.append("idProject", idProject);
+
+
+        const strokesString = JSON.stringify({strokes: strokes});
+        const strokesFile = new Blob([strokesString], {type:"application/json"});
+        data.append("strokes", strokesFile);
+
+        const previewCanvas = exportPreviewAction();
+        const previewFile = await fetch(previewCanvas)
+            .then(res => res.blob())
+        data.append("preview", previewFile);
+
+        try{
+            const res = await UpdateProject(data);
+        }catch(e){
+            console.log("Error en la base de datos");
+            console.log(e);
+        }
+    }
+
+    const exitAction = () => {
+        setIdProject(-1);
+        navigate("/");
+    };
 
     return (
 
@@ -63,8 +100,8 @@ function EditorPage() {
                 exportTimelapseAction={
                     exportTimelapseAction
                 }
-                saveAction={saveAction}
-                saveAndExitAction={saveAndExitAction}
+                saveProjectAction={saveProject}
+                exitAction={exitAction}
             />
 
             <CanvasBoard
@@ -73,6 +110,8 @@ function EditorPage() {
                 opacity={opacity}
                 brushType={brushType}
 
+                setStrokes={setStrokes}
+
                 setUndo={setUndoAction}
                 setRedo={setRedoAction}
 
@@ -80,11 +119,13 @@ function EditorPage() {
                     setExportPNGAction
                 }
 
+                setExportPreview={
+                    setExportPreviewAction
+                }
+
                 setExportTimelapse={
                     setExportTimelapseAction
                 }
-                setSave={setSaveAction}
-                setSaveAndExit={setSaveAndExitAction}
             />
 
         </div>

@@ -13,8 +13,8 @@ function Toolbar({
   redoAction,
   exportPNGAction,
   exportTimelapseAction,
-  saveAction,
-  saveAndExitAction
+  saveProjectAction,
+  exitAction
 }) {
   return (
     <div className="toolbar">
@@ -75,13 +75,13 @@ function Toolbar({
           Exportar Timelapse
       </button>
       <button
-          onClick={() => saveAction?.()}
+          onClick={() => saveProjectAction?.()}
       >
           Guardar
       </button>
 
       <button
-          onClick={() => saveAndExitAction?.()}
+          onClick={() => exitAction?.()}
       >
           Guardar y Salir
       </button>

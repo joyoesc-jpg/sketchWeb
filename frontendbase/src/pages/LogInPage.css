@@ -1,0 +1,28 @@
+.gallery-page {
+
+    min-height: 100vh;
+    
+    padding: 30px;
+}
+
+.gallery-title {
+
+    color: white;
+
+    margin-bottom: 30px;
+
+    font-size: 2rem;
+}
+
+.gallery-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(300px, 1fr)
+        );
+
+    gap: 24px;
+}
