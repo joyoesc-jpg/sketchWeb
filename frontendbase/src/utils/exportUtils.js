@@ -103,8 +103,13 @@ export function getPNG(sourceCanvas, preview){
     const exportCanvas =
         document.createElement("canvas");
 
-    exportCanvas.width = 1000;
-    exportCanvas.height = 800;
+    if(preview){
+        exportCanvas.width = 200;
+        exportCanvas.height = 160;
+    }else{
+        exportCanvas.width = 1000;
+        exportCanvas.height = 800;
+    }
 
     const exportCtx =
         exportCanvas.getContext("2d");
@@ -115,25 +120,21 @@ export function getPNG(sourceCanvas, preview){
     exportCtx.fillRect(
         0,
         0,
-        1000,
-        800
+        exportCanvas.width,
+        exportCanvas.height
     );
-
-    if(preview){
-        exportCtx.drawImage(
-            sourceCanvas,
-            0,
-            0,
-            200,
-            180
-        );
-    }else{
-        exportCtx.drawImage(
-            sourceCanvas,
-            0,
-            0
-        );
-    }
+    
+    exportCtx.drawImage(
+        sourceCanvas,
+        0,
+        0,
+        1000,
+        800,
+        0,
+        0,
+        exportCanvas.width,
+        exportCanvas.height
+    );
     
     return exportCanvas.toDataURL(
         "image/png"

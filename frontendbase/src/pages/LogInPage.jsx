@@ -1,9 +1,9 @@
 import "./LogInPage.css";
 import { useNavigate } from "react-router";
 import { LogIn } from "../utils/dbUtils";
-import { useReducer, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-function LogInPage({setIdUser}){
+function LogInPage(){
 
     const navigate = useNavigate();
 
@@ -22,7 +22,6 @@ function LogInPage({setIdUser}){
         if(userIn == "" || passIn == ""){
             setWrongMessage("Uno o ambos campos están vacíos.");
             setWrongState(true);
-            return;
         }
 
         try{
@@ -31,7 +30,7 @@ function LogInPage({setIdUser}){
                 password: passIn.current.value
             });
             if(data.id != null){
-                setIdUser(data.id);
+                localStorage.setItem("idUser", data.id);
                 navigate("/");
             }else{
                 setWrongMessage("Usuario y/o contraseña no son correctos.");
@@ -40,6 +39,7 @@ function LogInPage({setIdUser}){
         }catch(error){
             setWrongState(true);
             setWrongMessage("Error en la base de datos. Inténtelo de nuevo más tarde.");
+            console.log(error);
         }
     }
 

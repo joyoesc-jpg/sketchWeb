@@ -1,9 +1,13 @@
 package Servlets;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.util.Base64;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,20 +17,50 @@ public class svGetProjects extends HttpServlet {
     
     private db DB;
     private ResultSet tableRs;
+    private String UPLOAD_DIR;
 
     public svGetProjects (){
         super();
     }
     
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        
+        String projectPath = getServletContext().getRealPath("/");
+        File mainPath = new File(projectPath);
+        for(int i = 0; i < 2; i++){
+            projectPath = mainPath.getParent();
+            mainPath = new File(projectPath);
+        }
+        this.UPLOAD_DIR = projectPath;
+    }
+    
     ///Función parseadora de json
     private int parseJsonID(String json){
-        
         String[] jsonElements = json.split(",");
+        String rawID = jsonElements[0].split(":")[1];
+        return Integer.parseInt(rawID.substring(0, rawID.length() - 1));
+    }
+    
+    private String getPngURI(String fileName) throws IOException {
+        File file = new File(UPLOAD_DIR + "");
         
-        
-        int id = Integer.parseInt(jsonElements[0].split(":")[1]);
-        
-        return id;
+        // 2. Read file into a byte array
+        byte[] fileContent = new byte[(int) file.length()];
+        try (FileInputStream fis = new FileInputStream(file)) {
+            fis.read(fileContent);
+        }
+
+        // 3. Encode byte array to Base64
+        return Base64.getEncoder().encodeToString(fileContent);
+    }
+    
+    private String getDrawingJson(int id, String projectName, String fileName) throws IOException{
+        String encodedPNG = getPngURI(fileName);
+        String json = "{\"id\": '" + 
+                "'}";
+        return "";
     }
 
     @Override
@@ -57,13 +91,13 @@ public class svGetProjects extends HttpServlet {
         try{
             DB.setConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost/sketchweb_db?serverTimezone=UTC");
             tableRs = DB.executeQuery("SELECT * FROM project where user_id = " + userID + ";"); 
-            wrt.print("{drawings:[");
+            wrt.print("{\"drawings\":[");
             while(tableRs.next()){
                 id = tableRs.getInt("ID");
                 wrt = response.getWriter();
                 wrt.print("{\"id\" :\"" + id + "\"}");
             }
-            wrt.print("{]}");
+            wrt.print("]}");
             DB.closeConnection();
         }catch(Exception e){
             e.printStackTrace();

@@ -7,9 +7,18 @@ import CanvasBoard from "../components/CanvasBoard";
 import "./EditorPage.css";
 import { UpdateProject } from "../utils/dbUtils";
 
-function EditorPage({idUser, idProject, setIdProject}) {
+function EditorPage() {
+
 
     const navigate = useNavigate();
+    const idUser = new Number(localStorage.getItem("idUser"));
+    const idProject = new Number(localStorage.getItem("idProject"));
+    console.log(idProject);
+    if(idUser == -1){
+        navigate("/login");
+    }else if(idProject == -1){
+        navigate("/");
+    }
 
     if(idUser == -1 || idProject == -1){
         navigate("/");
@@ -69,7 +78,7 @@ function EditorPage({idUser, idProject, setIdProject}) {
     }
 
     const exitAction = () => {
-        setIdProject(-1);
+        localStorage.setItem("idProject", -1);
         navigate("/");
     };
 

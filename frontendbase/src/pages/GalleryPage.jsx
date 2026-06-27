@@ -3,28 +3,36 @@ import DrawingCard from "../components/DrawingCard";
 import CreateProjectForm from "../components/CreateProjectForm";
 import "./GalleryPage.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
-function GalleryPage({idUser, setIdProject}) {
+function GalleryPage() {
 
+    const navigate = useNavigate();
+    const idUser = new Number(localStorage.getItem("idUser"));
     if(idUser == -1){
-        window.location.href = "/login";
+        navigate("/login");
     }
 
     const [openModal, setOpenModal] = useState(false);
 
     const [drawings, setDrawings] = useState([]);
 
-    ///useEffect(async ()=>{
-    ///    try{
-    ///        const {data} = await getProjects({idUser});
-///
-    ///        console.log(data);
-///
-///
-    ///    }catch(e){
-    ///        console.log(e);
-    ///    }
-    ///}, []);
+    const setIdProject = id => {
+        localStorage.setItem("idProject", id);
+    }
+
+    useEffect(()=>{
+        const getData = async () => {
+            try{
+                const {data} = await getProjects({idUser});
+                console.log(data);
+            }catch(e){
+                console.log(e);
+            }
+        }
+
+        getData();
+    }, []);
 
     return (
         <div className="gallery-page">

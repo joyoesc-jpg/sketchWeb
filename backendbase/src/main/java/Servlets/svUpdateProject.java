@@ -13,9 +13,9 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -29,39 +29,29 @@ public class svUpdateProject extends HttpServlet {
     private int maxMemSize = 4 * 1024;
     private File file ;
     
-    private static final String UPLOAD_DIR = "C:/sketchWeb_db/";
+    private static String UPLOAD_DIR = "";
     
-    private boolean saveJson(){
-        
-        return true;
+    public svUpdateProject(){
+        super();
     }
     
-    private boolean savePreview(){
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         
-        return true;
-    }
-    
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet svUpdateProject</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet svUpdateProject at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String projectPath = getServletContext().getRealPath("/");
+        File mainPath = new File(projectPath);
+        for(int i = 0; i < 2; i++){
+            projectPath = mainPath.getParent();
+            mainPath = new File(projectPath);
         }
+        this.UPLOAD_DIR = projectPath;
     }
-
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         
         isMultipart = ServletFileUpload.isMultipartContent(request);
         response.setContentType("application/json");
@@ -98,7 +88,6 @@ public class svUpdateProject extends HttpServlet {
             while(iter.hasNext()){
                 FileItem item = (FileItem) iter.next();
                 if(!item.isFormField()){
-                    System.out.println(item.getFieldName()+ ", " + item.getName());
                     if(item.getFieldName().equals("strokes")){
                         strokes = item;
                     }else if(item.getFieldName().equals("preview")){
@@ -108,7 +97,6 @@ public class svUpdateProject extends HttpServlet {
                         return;
                     }
                 }else{
-                    System.out.println(item.getFieldName()+ ", " + item.getName());
                     if(item.getFieldName().equals("idProject")){
                         id = Integer.parseInt(item.getString());
                     }else{
