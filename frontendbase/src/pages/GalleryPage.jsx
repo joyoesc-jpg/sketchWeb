@@ -25,7 +25,12 @@ function GalleryPage() {
         const getData = async () => {
             try{
                 const {data} = await getProjects({idUser});
-                console.log(data);
+                
+                if(typeof(data.drawings) != "undefined"){
+                    setDrawings(data.drawings);
+                }else{
+                    return;
+                }
             }catch(e){
                 console.log(e);
             }

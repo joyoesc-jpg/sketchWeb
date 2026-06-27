@@ -44,7 +44,7 @@ public class svGetProjects extends HttpServlet {
     }
     
     private String getPngURI(String fileName) throws IOException {
-        File file = new File(UPLOAD_DIR + "");
+        File file = new File(UPLOAD_DIR + "/preview" + fileName + ".png");
         
         // 2. Read file into a byte array
         byte[] fileContent = new byte[(int) file.length()];
@@ -53,14 +53,15 @@ public class svGetProjects extends HttpServlet {
         }
 
         // 3. Encode byte array to Base64
-        return Base64.getEncoder().encodeToString(fileContent);
+        return "data:image/png;base64," + Base64.getEncoder().encodeToString(fileContent);
     }
     
     private String getDrawingJson(int id, String projectName, String fileName) throws IOException{
         String encodedPNG = getPngURI(fileName);
-        String json = "{\"id\": '" + 
-                "'}";
-        return "";
+        return "{\"id\": " + id +
+                ", \"title\" : \"" + projectName +
+                "\", \"preview\": \"" + encodedPNG +
+                "\"}";
     }
 
     @Override
@@ -92,17 +93,25 @@ public class svGetProjects extends HttpServlet {
             DB.setConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost/sketchweb_db?serverTimezone=UTC");
             tableRs = DB.executeQuery("SELECT * FROM project where user_id = " + userID + ";"); 
             wrt.print("{\"drawings\":[");
+            boolean flag = false;
             while(tableRs.next()){
+                if(flag){
+                    wrt.print(",");
+                }else{
+                    flag = true;
+                }
                 id = tableRs.getInt("ID");
-                wrt = response.getWriter();
-                wrt.print("{\"id\" :\"" + id + "\"}");
+                String projectName = tableRs.getString("projectName");
+                String fileName = tableRs.getString("filename");
+                String drawingObject = getDrawingJson(id, projectName, fileName);
+                wrt.print(drawingObject);
             }
             wrt.print("]}");
             DB.closeConnection();
         }catch(Exception e){
             e.printStackTrace();
             wrt = response.getWriter();
-            wrt.print("{\"id\" :\"null\"}");
+            wrt.print("{\"error\" :\"parseError\"}");
         }
         
     }
