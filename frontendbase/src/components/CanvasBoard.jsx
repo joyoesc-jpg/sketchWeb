@@ -14,12 +14,14 @@ function CanvasBoard({
     size,
     opacity,
     brushType,
-    setStrokes,
+    importedStrokes,
+    setCurrentStrokes,
     setUndo,
     setRedo,
     setExportPNG,
     setExportPreview,
-    setExportTimelapse
+    setExportTimelapse,
+    ref
 }) {
 
     const canvasElementRef = useRef(null);
@@ -46,7 +48,7 @@ function CanvasBoard({
     }, [color]);
 
     useEffect(()=>{
-        setStrokes(strokesRef);
+        setCurrentStrokes(strokesRef);
     }, strokesRef);
 
     useEffect(() => {
@@ -97,8 +99,8 @@ function CanvasBoard({
         );
     };
 
+    ///Redibujado del canvas.
     useEffect(() => {
-
         const canvas =
             createCanvas(
                 canvasElementRef.current
@@ -140,7 +142,6 @@ function CanvasBoard({
         );
 
         window.redrawCanvas = () => {
-            console.log(strokesRef.current.length);
             redrawCanvas(
                 ctxRef.current,
                 strokesRef.current
@@ -153,6 +154,7 @@ function CanvasBoard({
 
     }, []);
 
+    ///Funciones del toolbar
     useEffect(() => {
         setUndo(() => undo);
         setRedo(() => redo);
@@ -188,6 +190,7 @@ function CanvasBoard({
         );
     }, []);
 
+    ///Listeners de eventos de teclado (Ctrl + z, Ctrl + c,...)
     useEffect(() => {
 
         const handleKeyDown = (e) => {
@@ -225,6 +228,17 @@ function CanvasBoard({
         };
 
     }, []);    
+
+    ///Manejar trazos importados
+    useEffect(()=>{
+        if(importedStrokes){
+            strokesRef.current.push(...importedStrokes.current);
+            redrawCanvas(
+                ctxRef.current,
+                strokesRef.current
+            )
+        }
+    }, [importedStrokes]);
 
     return (
         <div className="canvas-container">

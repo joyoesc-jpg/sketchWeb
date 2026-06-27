@@ -1,19 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import Toolbar from "../components/Toolbar";
 import CanvasBoard from "../components/CanvasBoard";
 
 import "./EditorPage.css";
-import { UpdateProject } from "../utils/dbUtils";
+import { getStrokes, UpdateProject } from "../utils/dbUtils";
 
 function EditorPage() {
-
-
     const navigate = useNavigate();
     const idUser = new Number(localStorage.getItem("idUser"));
     const idProject = new Number(localStorage.getItem("idProject"));
-    console.log(idProject);
     if(idUser == -1){
         navigate("/login");
     }else if(idProject == -1){
@@ -24,7 +21,10 @@ function EditorPage() {
         navigate("/");
     }
 
-    const [strokes, setStrokes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [currentStrokes, setCurrentStrokes] = useState(null);
+    const [importedStrokes, setImportedStrokes] = useState(null);
     
     const [color, setColor] =
         useState("#000000");
@@ -60,7 +60,7 @@ function EditorPage() {
         data.append("idProject", idProject);
 
 
-        const strokesString = JSON.stringify({strokes: strokes});
+        const strokesString = JSON.stringify({strokes: currentStrokes});
         const strokesFile = new Blob([strokesString], {type:"application/json"});
         data.append("strokes", strokesFile);
 
@@ -81,6 +81,31 @@ function EditorPage() {
         localStorage.setItem("idProject", -1);
         navigate("/");
     };
+
+    useEffect(()=>{
+        const fetchStrokes = async () => {
+            try{
+                const {data} = await getStrokes({idProject});
+                if(data.error){
+                    if(data.error = "NotFound"){
+                        return;
+                    }
+                }
+                setImportedStrokes(data.strokes);
+            }catch(e){
+                console.log(e);
+            }
+        }
+        fetchStrokes();
+    }, [])
+
+    useEffect(()=>{
+        setIsLoading(false);
+    }, [currentStrokes]);
+
+    if(isLoading){
+        return <h1>Cargando</h1>
+    }
 
     return (
 
@@ -119,7 +144,8 @@ function EditorPage() {
                 opacity={opacity}
                 brushType={brushType}
 
-                setStrokes={setStrokes}
+                importedStrokes={importedStrokes}
+                setCurrentStrokes={setCurrentStrokes}
 
                 setUndo={setUndoAction}
                 setRedo={setRedoAction}

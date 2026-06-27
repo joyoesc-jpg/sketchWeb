@@ -21,6 +21,17 @@ function GalleryPage() {
         localStorage.setItem("idProject", id);
     }
 
+    const openDrawing = drawing => {
+        localStorage.setItem("idProject", drawing.id);
+        navigate("/edit");
+    }
+
+    const exportDrawing = async (drawing) => {
+    }
+
+    const deleteDrawing = async (drawing) => {
+    }
+
     useEffect(()=>{
         const getData = async () => {
             try{
@@ -64,9 +75,9 @@ function GalleryPage() {
                                 <DrawingCard
                                     key={drawing.id}
                                     drawing={drawing}
-                                    onOpen={() => {}}
-                                    onExport={() => {}}
-                                    onDelete={() => {}}
+                                    onOpen={openDrawing}
+                                    onExport={exportDrawing}
+                                    onDelete={deleteDrawing}
                                 />
 
                             )

@@ -83,7 +83,7 @@ function Toolbar({
       <button
           onClick={() => exitAction?.()}
       >
-          Guardar y Salir
+        Salir
       </button>
     </div>
   );

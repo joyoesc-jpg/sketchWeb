@@ -9,6 +9,9 @@ export const deleteProject = async (data) =>
 export const CreateProject = async (data) =>
     await axios.post("http://localhost:8080/api/createProject", data)
 
+export const getStrokes = async (data) =>
+    await axios.post("http://localhost:8080/api/getStrokes", data)
+
 export const LogIn = async (data) =>
     await axios.post("http://localhost:8080/api/login", data)
 
