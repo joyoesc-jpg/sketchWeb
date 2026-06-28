@@ -144,7 +144,7 @@ export function getPNG(sourceCanvas, preview){
 
 export function exportPNG(sourceCanvas) {
 
-    const exportedPNG = getPNG(sourceCanvas);
+    const exportedPNG = getPNG(sourceCanvas, false);
     
     const link =
         document.createElement("a");

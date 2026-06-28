@@ -1,9 +1,10 @@
-import { getProjects } from "../utils/dbUtils";
+import { deleteProject, getProjects } from "../utils/dbUtils";
 import DrawingCard from "../components/DrawingCard";
 import CreateProjectForm from "../components/CreateProjectForm";
 import "./GalleryPage.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import DeleteProjectModal from "../components/DeleteProjectModal";
 
 function GalleryPage() {
 
@@ -13,12 +14,21 @@ function GalleryPage() {
         navigate("/login");
     }
 
-    const [openModal, setOpenModal] = useState(false);
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openModalDelete, setOpenModalDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     const [drawings, setDrawings] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     const setIdProject = id => {
         localStorage.setItem("idProject", id);
+    }
+
+    const onCancelDelete = () => {
+        setOpenModalDelete(false);
+        setDeleteId(null);
     }
 
     const openDrawing = drawing => {
@@ -26,17 +36,23 @@ function GalleryPage() {
         navigate("/edit");
     }
 
-    const exportDrawing = async (drawing) => {
+    const beforeDelete = (drawing) =>{
+        const id = drawing.id;
+        setOpenModalDelete(true);
+        setDeleteId(id);
     }
 
-    const deleteDrawing = async (drawing) => {
+    const deleteDrawing = async () => {
+        const {data} = await deleteProject({"idProject": deleteId});
+        console.log(data);
+        navigate(0);
     }
 
     useEffect(()=>{
-        const getData = async () => {
+        const fetchData = async () =>{
+            setLoading(true);
             try{
                 const {data} = await getProjects({idUser});
-                
                 if(typeof(data.drawings) != "undefined"){
                     setDrawings(data.drawings);
                 }else{
@@ -44,19 +60,30 @@ function GalleryPage() {
                 }
             }catch(e){
                 console.log(e);
+            }finally{
+                setLoading(false);
             }
-        }
-
-        getData();
+        };
+        fetchData();
     }, []);
+
+    if(loading){
+        return <h1>Cargando</h1>
+    }
 
     return (
         <div className="gallery-page">
             <CreateProjectForm 
-                openModal={openModal}
-                setOpenModal={setOpenModal}
+                openModalCreate={openModalCreate}
+                setOpenModalCreate={setOpenModalCreate}
                 idUser={idUser}
                 setIdProject={setIdProject}
+            />
+
+            <DeleteProjectModal
+                openModal={openModalDelete}
+                onCancel={onCancelDelete}
+                onDeleteProject={deleteDrawing}
             />
 
             <h1>
@@ -76,8 +103,7 @@ function GalleryPage() {
                                     key={drawing.id}
                                     drawing={drawing}
                                     onOpen={openDrawing}
-                                    onExport={exportDrawing}
-                                    onDelete={deleteDrawing}
+                                    onDelete={beforeDelete}
                                 />
 
                             )
@@ -86,7 +112,7 @@ function GalleryPage() {
 
             </div>
 
-            <button onClick={()=>{setOpenModal(true)}}>Crear projecto</button>
+            <button onClick={()=>{setOpenModalCreate(true)}}>Crear projecto</button>
 
         </div>
     );

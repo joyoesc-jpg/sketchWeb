@@ -4,7 +4,7 @@ export const UpdateProject = async (data) =>
     await axios.post("http://localhost:8080/api/updateProject", data)
 
 export const deleteProject = async (data) =>
-    await axios.post("http://localhost:8080/api/svDeleteProject", data)
+    await axios.post("http://localhost:8080/api/deleteProject", data)
 
 export const CreateProject = async (data) =>
     await axios.post("http://localhost:8080/api/createProject", data)

@@ -3,14 +3,13 @@ import "./drawingCard.css";
 function DrawingCard({
     drawing,
     onOpen,
-    onExport,
     onDelete
 }) {
     return (
         <div className="drawing-card">
 
             <img
-                src={drawing.preview}
+                src={(drawing.preview != "null")? drawing.preview : "/null.png"}
                 alt={drawing.title}
             />
 
@@ -24,12 +23,6 @@ function DrawingCard({
                     onClick={() => onOpen(drawing)}
                 >
                     Abrir
-                </button>
-
-                <button
-                    onClick={() => onExport(drawing)}
-                >
-                    Exportar
                 </button>
 
                 <button

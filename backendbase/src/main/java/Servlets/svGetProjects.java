@@ -43,18 +43,20 @@ public class svGetProjects extends HttpServlet {
         return Integer.parseInt(rawID.substring(0, rawID.length() - 1));
     }
     
-    private String getPngURI(String fileName) throws IOException {
+    private String getPngURI(String fileName) {
         File file = new File(UPLOAD_DIR + "/preview" + fileName + ".png");
         
         byte[] fileContent = new byte[(int) file.length()];
         try (FileInputStream fis = new FileInputStream(file)) {
             fis.read(fileContent);
+        }catch(Exception e){
+            return null;
         }
 
         return "data:image/png;base64," + Base64.getEncoder().encodeToString(fileContent);
     }
     
-    private String getDrawingJson(int id, String projectName, String fileName) throws IOException{
+    private String getDrawingJson(int id, String projectName, String fileName){
         String encodedPNG = getPngURI(fileName);
         return "{\"id\": " + id +
                 ", \"title\" : \"" + projectName +
